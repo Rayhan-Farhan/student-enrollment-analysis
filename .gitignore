@@ -1,0 +1,10 @@
+/env
+*.pyc
+StudentEnrollment/StudentEnrollment/settings.py
+2_12.sql
+.vscode/settings.json
+tempCodeRunnerFile.sql
+apexcharts-bundle.zip
+apexcharts.amd.js.LICENSE.txt
+/extras
+

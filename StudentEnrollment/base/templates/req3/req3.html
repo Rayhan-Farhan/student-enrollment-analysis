@@ -1,0 +1,103 @@
+<!-- This is the dashboard page -->
+<!-- The base.html is extended from the folder templates(outside the base folder) -->
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="text-center">Usage of the resources</h1>
+
+
+<!-- <span>Hello, {{request.user}}</span>
+<span><a href="{% url 'logout' %}">Logout</a></span> -->
+
+<br>
+
+<div class="container">
+<br>
+
+<div class="row">
+    <div class="col-md-12 col-lg-12 col-sm-12">
+        <div class="white-box shadow">
+            <div class="d-md-flex mb-3">
+                <h3 class="box-title mb-0">Usage of the resources {{sem}}</h3>
+                <div class="col-md-3 col-sm-4 col-xs-6 ms-auto">
+                    <form method="POST" action="">
+                      {% csrf_token %}
+                      <select name="dropdown3" class="form-select shadow-none row border-top">
+                        <option>Spring2020</option>
+                        <option>Autumn2020</option>
+                        <option>Spring2021</option>
+                        <option>Summer2021</option>
+                        <option>Autumn2021</option>
+                    </select>
+                    <input class="btn btn-dark mt-1" type="submit" value="Submit here">
+                    </form>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table no-wrap">
+                    <thead>
+                        <tr>
+                            <th class="border-top-0"></th>
+                            <th class="border-top-0">Sum</th>
+                            <th class="border-top-0">Avg Enroll</th>
+                            <th class="border-top-0">Avg Room</th>
+                            <th class="border-top-0">Difference</th>
+                            <th class="border-top-0">Unused%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for i in data %}
+                      <tr>
+                        <td>{{i.cschoolid}}</td>
+                        <td>{{i.Sum}}</td>
+                        <td>{{i.Avgenrolled}}</td>
+                        <td>{{i.Avgroom}}</td>
+                        <td>{{i.Difference}}</td>
+                        <td>{{i.Unused}}%</td>
+                     </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <div class="table-responsive">
+              <table class="table no-wrap">
+                  <thead>
+                      <tr>
+                          <th class="border-top-0">Average of ROOM_CAPACITY</th>
+                          <th class="border-top-0">Average of ENROLLED</th>
+                          <th class="border-top-0">Average of Unused Space</th>
+                          <th class="border-top-0">Unused Percent</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    {% for i in data2 %}
+                      <td>{{i.Avg}}</td>
+                    {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+$(document).ready(function() {
+    //store the value
+    if (localStorage.selectVal) {
+    // Select the value stored
+        $('select').val( localStorage.selectVal );
+    }
+});
+
+  //on refresh keep it persistent
+$('select').on('change', function(){
+    var currentVal = $(this).val();
+    localStorage.setItem('selectVal', currentVal );
+});
+</script>
+
+{% endblock content %}

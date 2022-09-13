@@ -1,0 +1,349 @@
+<!-- This is the dashboard page -->
+<!-- The base.html is extended from the folder templates(outside the base folder) -->
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="text-center">Revenue of IUB</h1>
+
+<!-- <span>Hello, {{request.user}}</span>
+<span><a href="{% url 'logout' %}">Logout</a></span> -->
+
+<br>
+
+<div class="container">
+
+    <br>
+  
+  <div class="card shadow">
+    <div class="card-body font-weight-bold">
+      line Chart
+    </div>
+    <div id="myLineChart"></div>
+  </div>
+  <!-- <div id="myComboChart"></div> -->
+
+<br>
+
+<div class="card shadow">
+    <div class="card-body font-weight-bold">
+      Area Chart
+    </div>
+    <div id="myChart"></div>
+  </div>
+
+<br>
+
+<div class="card shadow">
+    <div class="card-body font-weight-bold">
+      Combo Chart
+    </div>
+    <div id="myChart2"></div>
+  </div>
+
+
+<div class="row">
+    <div class="col-md-12 col-lg-12 col-sm-12">
+        <div class="white-box shadow">
+            <div class="d-md-flex mb-3">
+                <h3 class="box-title mb-0">Revenue of IUB</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table no-wrap">
+                    <thead>
+                        <tr>
+                            <th class="border-top-0"></th>
+                            <th class="border-top-0">Semester no.</th>
+                            <th class="border-top-0">Year</th>
+                            <th class="border-top-0">SBE</th>
+                            <th class="border-top-0">SELS</th>
+                            <th class="border-top-0">SETS</th>
+                            <th class="border-top-0">SLASS</th>
+                            <th class="border-top-0">SPPH</th>
+                            <th class="border-top-0">Total</th>
+                            <th class="border-top-0">Difference</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for i in data %}
+                      <tr>
+                        <td>{{i.semester}}</td>
+                        <td>{{i.semester_num}}</td>
+                        <td>{{i.year}}</td>
+                        <td>{{i.sbe}}</td>
+                        <td>{{i.sels}}</td>
+                        <td>{{i.sets}}</td>
+                        <td>{{i.slass}}</td>
+                        <td>{{i.spph}}</td>
+                        <td>{{i.total}}</td>
+                        <td>{{i.Difference}}</td>
+                     </tr>
+                      {% endfor %}
+                          
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+//Combo Chart
+var options = {
+          series: [{
+          name: 'SBE',
+          type: 'column',
+          data: [{% for i in data %} {{ i.sbe }}, {% endfor %}]
+        }, {
+          name: 'SELS',
+          type: 'column',
+          data: [{% for i in data %} {{ i.sels }}, {% endfor %}]
+        },{
+          name: 'SETS',
+          type: 'column',
+          data: [{% for i in data %} {{ i.sets }}, {% endfor %}]
+        },
+        {
+          name: 'SLASS',
+          type: 'column',
+          data: [{% for i in data %} {{ i.slass }}, {% endfor %}]
+        },
+        {
+          name: 'SPPH',
+          type: 'column',
+          data: [{% for i in data %} {{ i.spph }}, {% endfor %}]
+        },
+         {
+          name: 'Total',
+          type: 'line',
+          data: [{% for i in data %} {{ i.total }}, {% endfor %}]
+        }],
+          chart: {
+          height: 350,
+          type: 'line',
+          stacked: false
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          width: [1, 1, 4]
+        },
+        title: {
+          text: 'IUB Revenue and Change %',
+          align: 'left',
+          offsetX: 110
+        },
+        xaxis: {
+          categories: [{% for i in data %} '{{ i.semester }}', {% endfor %}],
+        },
+        yaxis: [
+          {
+            axisTicks: {
+              show: true,
+            },
+            axisBorder: {
+              show: false,
+              color: '#008FFB'
+            },
+            labels: {
+              style: {
+                colors: '#008FFB',
+              }
+            },
+            title: {
+              text: "",
+              style: {
+                color: '#008FFB',
+              }
+            },
+
+          },
+         
+          {
+            seriesName: 'ClassSize',
+            opposite: true,
+            axisTicks: {
+              show: true,
+            },
+            axisBorder: {
+              show: false,
+              color: '#FEB019'
+            },
+            labels: {
+              style: {
+                colors: '#008FFB',
+              },
+            },
+            title: {
+              text: "",
+              style: {
+                color: '#FEB019',
+              }
+            }
+          },
+        ],
+        tooltip: {
+          fixed: {
+            enabled: true,
+            position: 'topLeft', // topRight, topLeft, bottomRight, bottomLeft
+            offsetY: 30,
+            offsetX: 60
+          },
+        },
+        legend: {
+          horizontalAlign: 'left',
+          offsetX: 40
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#myChart2"), options);
+        chart.render();
+
+
+
+
+
+
+
+
+
+//Stacked Area Chart
+var options = {
+    series: [
+    {
+      name: "SBE",
+      data: [{% for i in data %} {{ i.sbe }}, {% endfor %}]
+    },
+    {
+      name: "SELS",
+      data: [{% for i in data %} {{ i.sels }}, {% endfor %}]
+    },
+     {
+      name: "SETS",
+      data: [{% for i in data %} {{ i.sets }}, {% endfor %}]
+    },
+     {
+      name: "SLASS",
+      data: [{% for i in data %} {{ i.slass }}, {% endfor %}]
+    },
+    {
+      name: "SPPH",
+      data: [{% for i in data %} {{ i.spph }}, {% endfor %}]
+    },
+    {
+      name: "Total",
+      data: [{% for i in data %} {{ i.total }}, {% endfor %}]
+    }
+    
+    ],
+        chart: {
+          height: 350,
+          stacked: true,
+          type: 'area'
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'smooth'
+        },
+        title: {
+          text: 'Revenue Distribution among the schools',
+          align: 'left'
+        },
+        xaxis: {
+          categories: [{% for i in data %} "{{ i.semester }}", {% endfor %}]
+        },
+        tooltip: {
+          x: {
+            
+          },
+        },
+        };
+
+        var chart = new ApexCharts(document.querySelector("#myChart"), options);
+        chart.render();
+
+//Line Chart integration
+
+var options = {
+    series: [
+    {
+      name: "SBE",
+      data: [{% for i in data %} {{ i.sbe }}, {% endfor %}]
+    },
+    {
+      name: "SELS",
+      data: [{% for i in data %} {{ i.sels }}, {% endfor %}]
+    },
+     {
+      name: "SETS",
+      data: [{% for i in data %} {{ i.sets }}, {% endfor %}]
+    },
+     {
+      name: "SLASS",
+      data: [{% for i in data %} {{ i.slass }}, {% endfor %}]
+    },
+    {
+      name: "SPPH",
+      data: [{% for i in data %} {{ i.spph }}, {% endfor %}]
+    },
+    {
+      name: "Total",
+      data: [{% for i in data %} {{ i.total }}, {% endfor %}]
+    }
+   
+    ],
+          chart: {
+          height: 350,
+          type: 'line',
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'straight'
+        },
+        title: {
+          text: 'Revenue Trend of the schools',
+          align: 'left'
+        },
+        grid: {
+          row: {
+            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+            opacity: 0.5
+          },
+        },
+        xaxis: {
+          categories: [{% for i in data %} "{{ i.semester }}", {% endfor %}],
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#myLineChart"), options);
+        chart.render();
+
+
+
+
+$(document).ready(function() {
+    //store the value
+    if (localStorage.selectVal) {
+    // Select the value stored
+        $('select').val( localStorage.selectVal );
+    }
+});
+
+  //on refresh keep it persistent
+$('select').on('change', function(){
+    var currentVal = $(this).val();
+    localStorage.setItem('selectVal', currentVal );
+});
+
+</script>
+
+{% endblock content %}
